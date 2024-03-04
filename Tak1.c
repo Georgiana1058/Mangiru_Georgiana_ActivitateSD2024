@@ -1,151 +1,51 @@
-#include <iostream>
-
-#include<string>
-
-using namespace std;
-
-//Mangiru Georgiana 
-
-class Magazin {
-
-	int id;
-
-	string denumire;
-
-	string categorie;
-
-	int nrproduse;
-
-	float* cantitate;
-
-public:
-
-	Magazin() : id(0), denumire("-"), categorie("-"), nrproduse(0) {
-
-		this->cantitate = nullptr;
-
-
-	}
-
-	Magazin(int id, string denumire, string categorie, int nrproduse, float* cantitate) : id(id), denumire(denumire), categorie(categorie), nrproduse(nrproduse) {
-
-		this->cantitate = new float[nrproduse];
-
-		for (int i = 0; i < nrproduse; i++)
-
-		{
-
-			this->cantitate[i] = cantitate[i];
-
-		}
-
-
-	}
-
-	friend istream& operator>>(istream& is, Magazin& m) {
-
-		cout << "ID: "; is >> m.id;
-
-		cout << "Denumire: "; is >> m.denumire;
-
-		cout << "Categorie: "; is >> m.categorie;
-
-		cout << "Numar Produse: "; is >> m.nrproduse;
-
-		delete[]m.cantitate;
-
-		m.cantitate = new float[m.nrproduse];
-
-		cout << "Introduce-ti cantitatea produselor: ";
-
-		for (int i = 0; i < m.nrproduse; i++)
-
-		{
-
-			is >> m.cantitate[i];
-
-
-		}
-
-		return is;
-
-	}
-
-	friend ostream& operator<<(ostream& os, Magazin& m) {
-
-		os << "ID: " << m.id << endl;
-
-		os << "Denumire: " << m.denumire << endl;
-
-		os << "Categorie: " << m.categorie << endl;
-
-		for (int i = 0; i < m.nrproduse; i++)
-
-		{
-
-			os << "Cantitate:" << m.cantitate[i] << endl;
-
-		}
-
-		return os;
-
-	}
-
-	~Magazin() {
-
-		delete[]cantitate;
-
-	}
-
-	void setDenumire(string denumire) {
-
-		this->denumire = denumire;
-
-	}
-
-	void cantitateaMaxima() {
-
-		float p = 0;
-
-		for (int i = 0; i < nrproduse; i++)
-
-		{
-
-			if (p < cantitate[i]) p = cantitate[i];
-
-
-
-		}
-
-		cout << "Cantitatea maxima este: " << p;
-
-		cout << endl;
-
-	}
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Magazin {
+    int id;
+    char denumire[100];
+    char categorie[100];
+    int nrproduse;
+    float *cantitate;
 };
 
-int main() {
+void citireMagazin(struct Magazin *m) {
+    printf("ID: ");
+    scanf("%d", &m->id);
+    printf("Denumire: ");
+    scanf("%s", m->denumire);
+    printf("Categorie: ");
+    scanf("%s", m->categorie);
+    printf("Numar Produse: ");
+    scanf("%d", &m->nrproduse);
 
-	float v[] = { 0.5,2,2.5 };
-
-	Magazin t(1, "CocaCola", "Bautura", 3, v);
-
-	cout << t << endl;
-
-	t.setDenumire("Fanta");
-
-	cout << t << endl;
-
-	t.cantitateaMaxima();
-
-	Magazin t1;
-
-	cin >> t1;
-
-	cout << t1;
-
-	return 0;
-
+    m->cantitate = (float *)malloc(m->nrproduse * sizeof(float));
+    printf("Introduceti cantitatea produselor: ");
+    for (int i = 0; i < m->nrproduse; i++) {
+        scanf("%f", &m->cantitate[i]);
+    }
 }
 
+void afisareMagazin(struct Magazin m) {
+    printf("ID: %d\n", m.id);
+    printf("Denumire: %s\n", m.denumire);
+    printf("Categorie: %s\n", m.categorie);
+    for (int i = 0; i < m.nrproduse; i++) {
+        printf("Cantitate: %.2f\n", m.cantitate[i]);
+    }
+}
+
+void eliberareMemorie(struct Magazin *m) {
+    free(m->cantitate);
+    m->cantitate = NULL;
+}
+
+int main() {
+    struct Magazin t1;
+    citireMagazin(&t1);
+    afisareMagazin(t1);
+    eliberareMemorie(&t1);
+
+    return 0;
+}
