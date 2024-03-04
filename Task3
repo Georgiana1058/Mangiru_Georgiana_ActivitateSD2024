@@ -1,0 +1,86 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define MAX_LINE_LENGHT 100 // Lungimea maxima a unei linii in fisier
+//Definere structura magazin
+struct Magazin {
+	int id;
+	char denumire[50];
+	char categorie[50];
+	int nrproduse;
+	float* cantitate;
+}Magazin;
+//Functia de citire a unui obiect de tipul Magazin dintr un fisier text
+struct Magazin citesteMagazin(FILE* fisier)
+{
+	struct Magazin magazin;
+	fscanf(fisier, "%d  %s %s %d ", &magazin.id, magazin.denumire, magazin.categorie, &magazin.nrproduse);
+	magazin.cantitate = (float*)malloc(magazin.nrproduse * sizeof(float));
+	for (int i = 0; i < magazin.nrproduse; i++)
+	{
+		fscanf(fisier, "%f", &magazin.cantitate[i]);
+
+	}
+	return magazin;
+}
+//Functia de citire a unui vector de obiecte de tipul magazin dintr un fisier text
+struct Magazin* cistesteVectorMagazine(const char* numeFisier, int* dimensiuneVector) {
+
+	//Deschiderea fisierului
+	FILE* fisier = fopen(numeFisier, "r");
+	if (fisier == NULL) printf("Eroare la deschidere");
+
+
+	//Determinare numar de obiecte 
+	int nrobiecte = 0;
+	char buffer[MAX_LINE_LENGHT];
+	while (fgets(buffer, MAX_LINE_LENGHT, fisier) != NULL)//verific daca pot citii o linie valida in fisier
+		nrobiecte++;
+	rewind( fisier);//muta cursorul la inceputul fisierului
+
+
+
+	//Alocam memorie pentru vectorul de obiecte
+	struct Magazin* vector = (struct Magazin*)malloc(nrobiecte * sizeof(struct Magazin));
+	if (vector == NULL) printf("Eroare la alocare de memorie");
+
+	//Citim obiectele din fisier
+	for (int i = 0; i < nrobiecte; i++)
+		vector[i] = citesteMagazin(fisier);
+
+	*dimensiuneVector = nrobiecte;
+	fclose(fisier);
+	return vector;
+
+}
+//Functia care scrie un obiect de tiupul magazin in fisierul txt
+void scrieMagazin(FILE* fisier, struct Magazin magazin) {
+	fprintf(fisier, "%d %s %s %d", magazin.id, magazin.denumire, magazin.categorie, magazin.nrproduse);
+	for (int i = 0; i < magazin.nrproduse; i++)
+		fprintf(fisier, "%.2f", magazin.cantitate[i]);
+	fprintf(fisier, "\n");
+}
+//Functie de scriere obiect din vector in fisier
+void scriereVectorMagazine(const char* numeFisier,struct Magazin* vector, int dimensiuneVector) {
+	FILE* fisier = fopen( numeFisier, "w");
+	if (fisier == NULL) printf("Eroare la deschidere fisier");
+
+	//Scriem fiecare obiect din vector in fisier
+	for (int i = 0; i < dimensiuneVector; i++)
+		scrieMagazin(fisier, vector[i]);
+
+	fclose(fisier);
+
+}
+int main() {
+	int dimensiuneVector;
+	struct Magazin* vector = cistesteVectorMagazine("magazin.txt", &dimensiuneVector);//verific functia de citire din fisier
+	scriereVectorMagazine("magazine_nou.txt", vector, dimensiuneVector);//verific functia de scriere din fisier 
+	for (int i = 0; i < dimensiuneVector; i++)
+		free(vector[i].cantitate);
+	free(vector);
+	return 0;
+
+}
+
