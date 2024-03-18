@@ -1,0 +1,3 @@
+1, Magazin1, 10
+2, Magazin2, 20
+3, Magazin3, 15

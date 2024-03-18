@@ -1,0 +1,10 @@
+1 Bere Alcoolice 3 5.0 7.5 6.0
+2 Sucuri Naturale 2 1.5 2.0
+3 Produse de Curatenie 4 3.0 2.5 1.0 4.5
+4 Fructe 5 2.0 1.5 3.0 4.0 5.5
+5 Legume 3 1.0 1.5 2.5
+6 Carne 2 0.5 1.0
+7 Produse de Panificatie 3 1.0 1.5 2.0
+8 Produse Congelate 2 2.5 3.0
+9 Lactate 4 0.5 1.0 1.5 2.0
+10 Produse de Igiena Personala 3 2.0 2.5 3.0
