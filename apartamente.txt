@@ -1,0 +1,7 @@
+4,1,30.00,Piata Unirii
+5,4,180.00,Dristor
+6,2,90.00,Aviatiei
+7,3,150.00,Tineretului
+8,1,40.00,Piata Romana
+9,2,80.00,Pantelimon
+10,3,130.00,Obor
